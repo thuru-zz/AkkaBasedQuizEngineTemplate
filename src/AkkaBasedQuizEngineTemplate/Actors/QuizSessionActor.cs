@@ -11,9 +11,12 @@ namespace AkkaBasedQuizEngineTemplate.Actors
     public class QuizSessionActor : ReceiveActor
     {
         private Quiz _quiz;
+        private readonly string _sessionId;
 
-        public QuizSessionActor()
+        public QuizSessionActor(string sessionId)
         {
+            _sessionId = sessionId;
+
             Receive<RetrieveQuestionMessage>(message =>
             {
                 if(_quiz == null)
@@ -23,17 +26,26 @@ namespace AkkaBasedQuizEngineTemplate.Actors
                     _quiz = quiz;
                 }
 
-                Sender.Tell(_quiz.Questions.Single(q => q.Id == message.QuestionId));
+                if(message.SessionId == _sessionId)
+                {
+                    Sender.Tell(_quiz.Questions.Single(q => q.Id == message.QuestionId));
+                }
+                
             });
 
             Receive<UpdateAnswerMessage>(message =>
             {
-                if(_quiz != null)
+                if(_quiz != null && message.SessionId == _sessionId)
                 {
                     var question = _quiz.Questions.Single(q => q.Id == message.QuestionId);
                     question.Answer = message.Answer;
                 }
             });
+        }
+
+        public static Props GetQuizSessionActorProps(string sessionId)
+        {
+            return Props.Create(() => new QuizSessionActor(sessionId));
         }
     }
 }

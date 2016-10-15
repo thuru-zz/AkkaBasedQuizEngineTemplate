@@ -7,13 +7,15 @@ namespace AkkaBasedQuizEngineTemplate.Messages
 {
     public class RetrieveQuestionMessage
     {
-        public RetrieveQuestionMessage(string quizId, string questionId)
+        public string SessionId { get; private set; }
+        public string QuizId { get; private set; }
+        public string QuestionId { get; private set; }
+        
+        public RetrieveQuestionMessage(string sessionId, string quizId, string questionId)
         {
+            SessionId = sessionId;
             QuizId = quizId;
             QuestionId = questionId;
         }
-
-        public string QuizId { get; private set; }
-        public string QuestionId { get; private set; }
     }
 }

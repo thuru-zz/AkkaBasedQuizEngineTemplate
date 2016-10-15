@@ -7,11 +7,13 @@ namespace AkkaBasedQuizEngineTemplate.Messages
 {
     public class UpdateAnswerMessage
     {
+        public string SessionId { get; private set; }
         public string QuestionId { get; private set; }
         public string Answer { get; private set; }
 
-        public UpdateAnswerMessage(string questionId, string answer)
+        public UpdateAnswerMessage(string sessionId, string questionId, string answer)
         {
+            SessionId = sessionId;
             QuestionId = questionId;
             Answer = answer;
         }

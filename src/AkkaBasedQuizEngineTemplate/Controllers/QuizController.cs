@@ -28,7 +28,7 @@ namespace AkkaBasedQuizEngineTemplate.Controllers
             var quizSession = await quizCoordinator.Ask<IActorRef>(sessionId);
             
             // assuming some part of the session has the quiz Id
-            var retrieveQuestionMessage = new RetrieveQuestionMessage(sessionId.Split('-')[0], questionId);
+            var retrieveQuestionMessage = new RetrieveQuestionMessage(sessionId, sessionId.Split('-')[0], questionId);
             var question = await quizSession.Ask<Question>(retrieveQuestionMessage);
 
             return Ok(question);
@@ -42,7 +42,7 @@ namespace AkkaBasedQuizEngineTemplate.Controllers
                 var quizCoordinator = _quizActorSystem.ActorSelection("/user/QuizMasterActor/QuizSessionCoordinatorActor/");
                 var quizSession = await quizCoordinator.Ask<IActorRef>(sessionId);
 
-                var updateAnswerMessage = new UpdateAnswerMessage(answer.QuestionId, answer.Answer);
+                var updateAnswerMessage = new UpdateAnswerMessage(sessionId, answer.QuestionId, answer.Answer);
                 quizSession.Tell(updateAnswerMessage);
 
                 return Ok();

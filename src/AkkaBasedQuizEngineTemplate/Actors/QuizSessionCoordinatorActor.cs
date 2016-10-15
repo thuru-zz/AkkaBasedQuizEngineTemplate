@@ -18,7 +18,7 @@ namespace AkkaBasedQuizEngineTemplate.Actors
             {
                 if (!_quizSessions.Keys.Contains(sessionId))
                 {
-                    var quizSessionActor = Context.ActorOf<QuizSessionActor>(sessionId);
+                    var quizSessionActor = Context.ActorOf(QuizSessionActor.GetQuizSessionActorProps(sessionId), sessionId);
                     _quizSessions[sessionId] = quizSessionActor;
                 }
 
