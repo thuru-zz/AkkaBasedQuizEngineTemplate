@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Akka.Actor;
+using AkkaBasedQuizEngineTemplate.Actors;
 
 namespace AkkaBasedQuizEngineTemplate
 {
@@ -29,6 +31,14 @@ namespace AkkaBasedQuizEngineTemplate
         {
             // Add framework services.
             services.AddMvc();
+
+            // Initiate Acotr System
+            var quizSystem = ActorSystem.Create("QuizActorSystem");
+            var master = quizSystem.ActorOf<QuizMasterActor>("QuizMasterActor");
+            
+            services.AddSingleton(typeof(ActorSystem), (serviceProvider) => quizSystem);
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +48,8 @@ namespace AkkaBasedQuizEngineTemplate
             loggerFactory.AddDebug();
 
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUi();
         }
     }
 }
