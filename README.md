@@ -2,3 +2,7 @@
 Akka.NET based Quiz Engine Template in ASP.NET Core
 
 This is a simple implementation of Akka.NET, in order to have a quick and understandable start of the framework
+
+The below is the Actor system diagram for this scenario.
+
+![Actor system image](https://github.com/thuru/AkkaBasedQuizEngineTemplate/blob/master/src/AkkaBasedQuizEngineTemplate/ReadMe/Akka.NET%20actor%20model%20for%20quiz%20engine.jpg)
